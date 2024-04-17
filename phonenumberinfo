@@ -1,0 +1,29 @@
+import phonenumbers
+from phonenumbers import carrier, geocoder, timezone
+
+def get_phone_info(mobile_no):
+    mobile_no = phonenumbers.parse(mobile_no)
+    if phonenumbers.is_valid_number(mobile_no):
+        return {
+            'timezone': timezone.time_zones_for_number(mobile_no),
+            'carrier': carrier.name_for_number(mobile_no, "en"),
+            'country': geocoder.description_for_number(mobile_no, "en")
+        }
+    else:
+        return None
+
+def print_phone_info(info):
+    if info:
+        print('Phone Number belongs to region :', info['timezone'])
+        print('Service Provider : ', info['carrier'])
+        print('Phone number belongs to country : ', info['country'])
+    else:
+        print("Please enter a valid mobile number")
+
+def main():
+    mobile_no = input("Enter Phone number with country code(+xx xxxxxxxxx): ")
+    info = get_phone_info(mobile_no)
+    print_phone_info(info)
+
+if __name__ == "__main__":
+    main()
